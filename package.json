@@ -1,0 +1,27 @@
+{
+  "name": "ygg",
+  "version": "0.1.0",
+  "description": "Tree data structure for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jugoncalves/yggdrasil.git"
+  },
+  "keywords": [
+    "tree",
+    "data",
+    "structure"
+  ],
+  "author": "Ju Gonçalves <github@jugoncalv.es>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jugoncalves/yggdrasil/issues"
+  },
+  "homepage": "https://github.com/jugoncalves/yggdrasil",
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  }
+}
