@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/jugoncalves/yggdrasil",
   "devDependencies": {
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "underscore": "^1.7.0"
+  },
+  "dependencies": {
+    "underscore": "^1.7.0"
   }
 }
