@@ -1,14 +1,15 @@
-var graph       = require('./src/graph/index')
-  , colouring   = require('./src/graph/colouring')
-
-
-// exports Yggdrasil
-var Yggdrasil = {
-  graph: {
-    Graph: graph,
-    colouring: colouring
-  },
-  tree: {}
+module.exports = {
+  Graph: require('./src/graph')
 }
 
-module.exports = Yggdrasil
+var Graph = require('./src/graph').Graph
+
+var g = Graph.new('yay', 'my yay graph')
+
+g = g
+  .addVertex({oops: 'oops'})
+  .addVertex({wow: 'wow'})
+
+var it = Graph.Iterator.new(g)
+
+console.log(it.next().get());

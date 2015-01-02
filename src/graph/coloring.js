@@ -1,24 +1,26 @@
-var Graph = require('./index')
+var Graph = require('./graph')
   , _     = require('underscore')
 
 /*
 
- Greedy Colouring Algorithm.
+ Greedy Coloring Algorithm.
 
  It's known that GCA performs differently depending on how the vertices are ordered within a set.
  That said, the current implementation provides 3 different ordering algorithm for graphs:
     - random sequence
     - largest first
     - lexographic breadth-first search (lex-bfs)
- It's also known that a graph ordered by lex-bfs results in a GCA perfoming optimal for
- Interval and Indifference graphes :+1:.
+        It's also known that a graph ordered by lex-bfs results in a GCA perfoming optimal for
+        Interval and Indifference graphes :+1:.
 
  @params   g => Graph instance, ordering => Ordering Algorithm function
  @return   new Graph instance, vertices now has color property
 
 */
 
-var GreedyColouring = function (g, ordering){
+var Color = Object.create({})
+
+Color.GreedyColoring = function (g, ordering){
 
   g = ordering(g)
 
@@ -60,7 +62,7 @@ var GreedyColouring = function (g, ordering){
   return new Graph(g.vs)
 }
 
-var RandomSequence = function (g){
+Color.RandomSequence = function (g){
   var shuffle = function(o){
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x)
     return o
@@ -75,7 +77,7 @@ var RandomSequence = function (g){
     })).fixEdges()
 }
 
-var LargestFirst = function(g){
+Color.LargestFirst = function(g){
   return new Graph(_.sortBy(g.vs, function(elm){
     return elm.degree()
   })
@@ -86,13 +88,13 @@ var LargestFirst = function(g){
   })).fixEdges()
 }
 
-var LexBFS = function(g){
+Color.LexBFS = function(g){
 
   var vl = g.vs.map(function(elm){
     return {
       id: elm.id,
       i: g.vs.length - 1 - elm.id,
-      label: '_', // initialize all vertices as ∅
+      label: '∅', // initialize all vertices as ∅
       edges: elm.edges
     }
   })
@@ -162,9 +164,4 @@ var LexBFS = function(g){
 }
 
 
-module.exports = {
-  greedy    : GreedyColouring,
-  rs        : RandomSequence,
-  lf        : LargestFirst,
-  lexbfs    : LexBFS
-}
+module.exports = Object.freeze(Color)

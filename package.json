@@ -1,10 +1,10 @@
 {
-  "name": "ygg",
+  "name": "ygggdrasil",
   "version": "0.1.1",
   "description": "Tree data structure for JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "node_modules/mocha/bin/_mocha test"
   },
   "repository": {
     "type": "git",
@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/jugoncalves/yggdrasil",
   "devDependencies": {
-    "mocha": "^2.0.1",
-    "underscore": "^1.7.0"
+    "mocha": "^2.0.1"
   },
   "dependencies": {
-    "underscore": "^1.7.0"
+    "ramda": "^0.8.0",
+    "stampit": "^1.1.0"
   }
 }
