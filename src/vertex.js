@@ -79,20 +79,19 @@ Vertex.new  = function(props){
 
 */
 
-Vertex.addEdge = function(v1, v2){
+Vertex.addEdge = function(v2){
 
-  vertexChecker(v1)
   vertexChecker(v2)
 
-  var edges = v1._edges
+  var edges = this._edges
 
-  if(!Vertex.hasEdge(v1, v2)){
+  if(!this.hasEdge(v2)){
     edges.push(v2)
   }
 
-  v1._edges = edges
+  this._edges = edges
 
-  return v1
+  return this
 
 }
 
@@ -113,13 +112,12 @@ Vertex.addEdge = function(v1, v2){
 
 */
 
-Vertex.removeEdge = function (v1, v2){
+Vertex.removeEdge = function (v2){
 
-  vertexChecker(v1)
   vertexChecker(v2)
 
-  var edges = v1._edges.splice(R.findIndex(R.propEq('_id', v2._id))(v1._edges), 1)
-  v1._edges = edges == -1 ? v1._edges : edges
+  var edges = this._edges.splice(R.findIndex(R.propEq('_id', v2._id))(this._edges), 1)
+  this._edges = edges == -1 ? this._edges : edges
 
   return v1
 }
@@ -136,8 +134,8 @@ Vertex.removeEdge = function (v1, v2){
 
 */
 
-Vertex.degree = function(v){
-  return v._edges.length
+Vertex.degree = function(){
+  return this._edges.length
 }
 
 /*
@@ -154,9 +152,12 @@ Vertex.degree = function(v){
 
 */
 
-Vertex.addProperty = function(v, property, value){
+addProperty = function(v, prop){
 
-  Object.defineProperty(v, property, {
+  var key   = Object.keys(prop)[0]
+    , value = prop[key] 
+
+  Object.defineProperty(v, key, {
       get: function(){
       return value
     }
@@ -165,10 +166,18 @@ Vertex.addProperty = function(v, property, value){
     }
     , enumerable: true
     , writable: true
-    , condigurable: false
+    , configurable: false
   })
 
   return v
+}
+
+Vertex.extend = function(props){
+  props.forEach(function(prop){
+    addProperty(this, prop)
+  }.bind(this))
+
+  return this
 }
 
 /*
@@ -183,8 +192,8 @@ Vertex.addProperty = function(v, property, value){
 
 */
 
-Vertex.isVertex = function(v){
-  return v.type == 'vertex'
+Vertex.isVertex = function(this){
+  return this._type == 'vertex'
 }
 
 /*
@@ -203,8 +212,8 @@ Vertex.isVertex = function(v){
 
 */
 
-Vertex.hasEdge = function(v1, v2){
-  return R.findIndex(v2._id)(v1._edges) != -1
+Vertex.hasEdge = function(v2){
+  return R.findIndex(v2._id)(this._edges) != -1
 }
 
 
