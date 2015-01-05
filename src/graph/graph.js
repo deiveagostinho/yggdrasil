@@ -111,8 +111,12 @@ Graph.degree = function (){
 
 }
 
-Graph.isGraph = function (){
-  return this._type == 'graph'
+Graph.n = function(){
+  return this._vs.length
+}
+
+Graph.isGraph = function (g){
+  return g._type == 'graph'
 }
 
 Graph.objectify = function (){
@@ -128,6 +132,18 @@ Graph.objectify = function (){
 
 
   return o
+}
+
+Graph.map = function(f){
+  return this._vs.map(f)
+}
+
+Graph.filter = function(f){
+  return this._vs.filter(f)
+}
+
+Graph.iterate = function(f){
+  return this._vs.forEach(f)
 }
 
 Graph.Iterator = Iterator

@@ -155,7 +155,7 @@ Vertex.degree = function(){
 addProperty = function(v, prop){
 
   var key   = Object.keys(prop)[0]
-    , value = prop[key] 
+    , value = prop[key]
 
   Object.defineProperty(v, key, {
       get: function(){
@@ -180,6 +180,20 @@ Vertex.extend = function(props){
   return this
 }
 
+Vertex.edges = Object.create({})
+
+Vertex.edges.map = function(f){
+  return this._edges.map(f)
+}
+
+Vertex.edges.filter = function(f){
+  return this._edges.filter(f)
+}
+
+Vertex.edges.iterate = function(f){
+  return this._edges.forEach(f)
+}
+
 /*
 
   Checks whether the param v is a vertex or not.
@@ -192,8 +206,8 @@ Vertex.extend = function(props){
 
 */
 
-Vertex.isVertex = function(this){
-  return this._type == 'vertex'
+Vertex.isVertex = function(v){
+  return v._type == 'vertex'
 }
 
 /*

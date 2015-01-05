@@ -1,5 +1,5 @@
 var Graph = require('./graph')
-  , _     = require('underscore')
+  , R     = require('ramda')
 
 /*
 
@@ -20,46 +20,54 @@ var Graph = require('./graph')
 
 var Color = Object.create({})
 
-Color.GreedyColoring = function (g, ordering){
+Color.GreedyColoring = function (g, ord){
 
-  g = ordering(g)
-
-  g.vs.map(function(vertex, index){
-      vertex.color = 0
-
-      return vertex
-    })
-
-  g.at(0).color = 1
-
+  var _g = ord(g)
+  var it = Graph.Iterator.new(_g)
   var colors = [1]
 
+  _g.iterate(function(v){
+    v.extend({
+      color: 0
+    })
+  })
+
+  it
+    .get()
+    .color = 1
+
   // O(n+m)
-  var _g = g.vs
-      .slice(1, g.vs.length)
+  var vs = _g.vs
       .map(function(vertex){
-        var neighbors = _.unique(vertex.edges.map(function(elm){
-          return g.vs[elm].color
-        }))
+        if(vertex != it.get()){
 
-        var hasMin = _.min(_.difference(colors, neighbors))
+          var neighbors = R.uniq(
+            vertex.edges.map(function(elm){
+              return elm.color
+            })
+          )
 
-        // different from neighbors and of 0
-        if(hasMin == Infinity){
-          vertex.color = _.max(neighbors) + 1
-          colors.push(vertex.color)
+          var hasMin = R.min(R.difference(colors, neighbors))
+
+          // different from neighbors and 0
+          if(hasMin == Infinity){
+            vertex.color = R.max(neighbors) + 1
+            colors.push(vertex.color)
+          }
+          else{
+            vertex.color = hasMin
+          }
+
+          return vertex
         }
-        else{
-          vertex.color = hasMin
-        }
-
-        return vertex
 
       })
 
-  _g.unshift(g.at(0))
-
-  return new Graph(g.vs)
+  return Graph.new(
+    _g.name,
+    _g.desc,
+    vs
+  )
 }
 
 Color.RandomSequence = function (g){
@@ -68,48 +76,49 @@ Color.RandomSequence = function (g){
     return o
   }
 
-  g.vs = shuffle(g.vs)
+  var vs = shuffle(g._vs)
 
-  return new Graph(g.vs
-    .map(function(elm, index){
-      elm.new = index
-      return elm
-    })).fixEdges()
+  return Graph.new(
+    g.name,
+    g.desc,
+    vs
+  )
 }
 
 Color.LargestFirst = function(g){
-  return new Graph(_.sortBy(g.vs, function(elm){
-    return elm.degree()
-  })
-  .reverse()
-  .map(function(elm, index){
-    elm.new = index
-    return elm
-  })).fixEdges()
+  return Graph.new(
+    g.name,
+    g.desc,
+    R.sortBy(g._vs, function(vertex){
+      return vertex.degree()
+    })
+    .reverse()
+  )
 }
 
 Color.LexBFS = function(g){
 
-  var vl = g.vs.map(function(elm){
+  var vl = g.map(function(v, index){
     return {
-      id: elm.id,
-      i: g.vs.length - 1 - elm.id,
+      id: index,
+      i: g._vs.length - 1 - index,
       label: '∅', // initialize all vertices as ∅
-      edges: elm.edges
+      edges: v.edges,
+      v: v
     }
   })
 
   var vertices = []
-  var _vertices = _.clone(vl)
+  var _vertices = R.clone(vl)
   var q = {}
 
-  vl.label = '_'
+  vl.label = '∅'
   q[vl.label] = vl
 
   var evaluateVertex = function(v){
 
-    _.difference(v.edges, vertices.map(function(elm){
-      return elm.id
+    R.difference(v.edges, vertices.map(function(v){
+      return v.id
     }))
     .forEach(function(w){
         w = _vertices[w]
@@ -150,17 +159,17 @@ Color.LexBFS = function(g){
     evaluateVertex(v)
   }
 
-  return new Graph(
-    _.sortBy(vertices, function(elm){
+  return Graph.new(
+    g.name,
+    g.desc,
+    R.sortBy(vertices, function(elm){
       return elm.label
     })
     .reverse()
-    .map(function(elm, index){
-      elm.new = index
-      return elm
+    .map(function(elm){
+      return elm.v
     })
-  ).fixEdges()
-
+  )
 }
 
 
