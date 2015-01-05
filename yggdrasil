@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+var b = require('browserify')({standalone: 'yggdrasil'})
+  , fs = require('fs')
+
+b.add('./index.js')
+b.bundle().pipe(fs.createWriteStream(__dirname + '/dist/yggdrasil.js'))

@@ -4,7 +4,8 @@
   "description": "Tree data structure for JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/_mocha test"
+    "test": "node_modules/mocha/bin/_mocha test/",
+    "bundle": "node yggdrasil"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "mocha": "^2.0.1"
   },
   "dependencies": {
+    "browserify": "^8.0.3",
     "ramda": "^0.8.0",
     "stampit": "^1.1.0"
   }
