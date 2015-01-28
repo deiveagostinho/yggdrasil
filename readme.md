@@ -8,9 +8,9 @@ Roadmap
 -------
 
 ###Prototypes
-- [] Generic tree prototype
-- [] Binary Tree prototype
+- [ ] Generic tree prototype
+- [ ] Binary Tree prototype
 
 
 ###Algorithms
-- [] Binary Search
+- [ ] Binary Search
