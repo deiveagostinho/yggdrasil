@@ -1,11 +1,11 @@
 {
   "name": "ygggdrasil",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tree data structure for JavaScript",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/mocha/bin/_mocha test/",
-    "bundle": "node yggdrasil"
+    "bundle": "tasks/yggdrasil"
   },
   "repository": {
     "type": "git",
